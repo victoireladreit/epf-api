@@ -4,11 +4,12 @@
 
   - Django
 
-  - Flask
+  - ***Flask***
 
   - FastAPI
 
   - All of the above
+
 
 - **Question 2:** _What's the main difference between Django, Flask and FastAPI in terms of performance and speed?_
 
@@ -16,9 +17,10 @@
 
   - Flask outperforms Django and FastAPI.
 
-  - FastAPI is renowned for its increased speed and performance compared with Django and Flask.
+  - **_FastAPI is renowned for its increased speed and performance compared with Django and Flask._**
 
   - Django, Flask and FastAPI have equivalent performance.
+
 
 - **Question 3:** What is an endpoint in the context of REST APIs?\*
 
@@ -26,13 +28,14 @@
 
   - A breakpoint in the code where the API can be interrupted.
 
-  - A specific URL to which a request can be sent to interact with the API.
+  - **_A specific URL to which a request can be sent to interact with the API._**
 
   - A unique identifier assigned to each incoming request.
 
+
 - **Question 4:** _What are the main HTTP verbs used to define REST API methods?_
 
-  - GET, POST, PUT, PATCH, DELETE
+  - **_GET, POST, PUT, PATCH, DELETE_**
 
   - SEND, RECEIVE, UPDATE, REMOVE
 
@@ -40,15 +43,17 @@
 
   - FETCH, INSERT, UPDATE, DELETE
 
+
 - **Question 5:** _In the context of REST APIs, what does the term "middleware" mean?_
 
   - A component that processes data sent by the user.
 
   - An external library used to speed up API development.
 
-  - Intermediate software that processes the request before it reaches the main application.
+  - **_Intermediate software that processes the request before it reaches the main application._**
 
   - A method for securing data stored in the database.
+
 
 - **Question 6:** _Which Python library is often used to serialize and deserialize JSON data in the context of REST APIs?_
 
@@ -56,29 +61,32 @@
 
   - PyJSON
 
-  - json.dumps() and json.loads()
+  - **_json.dumps() and json.loads()_**
 
   - serializeJSON
+
 
 - **Question 7:** _What is the main use of the HTTP "PUT" method in the context of REST APIs?_
 
   - Create a new resource.
 
-  - Update an existing resource, or create one if it doesn't exist.
+  - **_Update an existing resource, or create one if it doesn't exist._**
 
   - Delete a resource.
 
   - Read a specific resource.
 
+
 - **Question 8:** In FastAPI, how do you define an endpoint to handle a POST request with JSON data?\*
 
-  - @app.post("/endpoint")
+  - **_@app.post("/endpoint")_**
 
   - @app.get("/endpoint")
 
   - @app.request("/endpoint")
 
   - @app.update("/endpoint")
+
 
 # Creating an API with FastAPI
 
