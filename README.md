@@ -129,6 +129,7 @@ Don't forget to add me to the repo with the following email address: clement.let
 - **Step 5: First call to the API:**  Make an API request on the hello route using the swagger directly or a tool like insomnia or postman
 
 - **Step 6: Access the dataset:**  Create a route in api/routes/data to download and save the contents of the following kaggle dataset in the src/data folder: https://www.kaggle.com/datasets/uciml/iris. If you're having too many problems, simply download the dataset from the kaggle website. documentation : https://www.geeksforgeeks.org/how-to-download-kaggle-datasets-into-jupyter-notebook/
+  /!\ NB: you need to download your Kaggle API key and put it in your machine in C:\Users\{username}\.kaggle
 
 - **Step 7: Loading the Iris Flower dataset:** Add an endpoint to load the iris dataset file as a dataframe and return it as a json.
 
