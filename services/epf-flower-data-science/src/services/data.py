@@ -17,3 +17,11 @@ def load_csv_data_as_json():
         return df.to_dict(orient='records')  # Convert DataFrame to a list of dictionaries
     except FileNotFoundError:
         return {"error": "Dataset file not found."}
+
+
+def process_species_data():
+    data = load_csv_data_as_json()
+    for record in data:
+        if 'Species' in record and record['Species'].startswith('Iris-'):
+            record['Species'] = record['Species'].replace('Iris-', '')
+    return data
