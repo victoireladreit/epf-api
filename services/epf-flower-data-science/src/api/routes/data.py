@@ -1,6 +1,6 @@
 import traceback
 
-from src.services.data import get_kaggle_data, load_csv_data_as_json, process_iris_dataset
+from src.services.data import get_kaggle_data, load_csv_data_as_json, process_iris_dataset, split_dataset
 from fastapi import APIRouter, HTTPException
 
 router = APIRouter()
@@ -30,3 +30,11 @@ def process_iris_data():
     except:
         return "Error: couldn't process the data."
     return dataset
+
+
+@router.get("/data/split")
+def split_iris_dataset(test_size: float = 0.2):
+    result = split_dataset(test_size)
+    if "error" in result:
+        raise HTTPException(status_code=404, detail=result["error"])
+    return result

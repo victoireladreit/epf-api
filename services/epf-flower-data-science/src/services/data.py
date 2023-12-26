@@ -1,6 +1,7 @@
 import pandas as pd
 from kaggle import KaggleApi
 from sklearn.preprocessing import StandardScaler
+from sklearn.model_selection import train_test_split
 
 
 def get_kaggle_data():
@@ -31,5 +32,18 @@ def process_iris_dataset():
         df[numeric_columns] = scaler.fit_transform(df[numeric_columns])
         return df.to_dict(orient='records')
 
+    except FileNotFoundError:
+        return {"error": "Dataset file not found."}
+
+
+def split_dataset(test_size=0.2):
+    file_path = 'src/data/iris.csv'
+    try:
+        df = pd.read_csv(file_path)
+        train_df, test_df = train_test_split(df, test_size=test_size)
+        return {
+            "train": train_df.to_dict(orient='records'),
+            "test": test_df.to_dict(orient='records')
+        }
     except FileNotFoundError:
         return {"error": "Dataset file not found."}
