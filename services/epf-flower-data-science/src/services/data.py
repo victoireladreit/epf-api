@@ -1,7 +1,11 @@
+import os
 import pandas as pd
 from kaggle import KaggleApi
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
+import json
+from sklearn.neighbors import KNeighborsClassifier
+import joblib
 
 
 def get_kaggle_data():
@@ -26,10 +30,14 @@ def process_iris_dataset():
     try:
         df = pd.read_csv(file_path)
 
-        # Example processing: Standardizing numeric features
+        # Standardizing numeric features
         scaler = StandardScaler()
         numeric_columns = df.select_dtypes(include=['float64', 'int64']).columns
         df[numeric_columns] = scaler.fit_transform(df[numeric_columns])
+
+        # Remove "Iris-" from the species names
+        df['Species'] = df['Species'].str.replace('Iris-', '')
+
         return df.to_dict(orient='records')
 
     except FileNotFoundError:
