@@ -1,4 +1,6 @@
-from src.services.data import get_kaggle_data, load_csv_data_as_json, process_species_data
+import traceback
+
+from src.services.data import get_kaggle_data, load_csv_data_as_json, process_iris_dataset
 from fastapi import APIRouter, HTTPException
 
 router = APIRouter()
@@ -22,9 +24,9 @@ def load_data_as_json():
 
 
 @router.get("/data/process")
-def process_data():
+def process_iris_data():
     try:
-        dataset = process_species_data()
+        dataset = process_iris_dataset()
     except:
         return "Error: couldn't process the data."
     return dataset

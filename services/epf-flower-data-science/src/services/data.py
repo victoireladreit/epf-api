@@ -1,5 +1,6 @@
 import pandas as pd
 from kaggle import KaggleApi
+from sklearn.preprocessing import StandardScaler
 
 
 def get_kaggle_data():
@@ -19,9 +20,16 @@ def load_csv_data_as_json():
         return {"error": "Dataset file not found."}
 
 
-def process_species_data():
-    data = load_csv_data_as_json()
-    for record in data:
-        if 'Species' in record and record['Species'].startswith('Iris-'):
-            record['Species'] = record['Species'].replace('Iris-', '')
-    return data
+def process_iris_dataset():
+    file_path = 'src/data/iris.csv'
+    try:
+        df = pd.read_csv(file_path)
+
+        # Example processing: Standardizing numeric features
+        scaler = StandardScaler()
+        numeric_columns = df.select_dtypes(include=['float64', 'int64']).columns
+        df[numeric_columns] = scaler.fit_transform(df[numeric_columns])
+        return df.to_dict(orient='records')
+
+    except FileNotFoundError:
+        return {"error": "Dataset file not found."}
