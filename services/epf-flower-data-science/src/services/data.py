@@ -100,3 +100,26 @@ def train_dataset():
     joblib.dump(model, model_save_path)
 
     return {"status": "Model trained and saved successfully"}
+
+
+def predict():
+    """
+    Makes predictions using the trained model and test dataset.
+
+    Returns:
+        JSON or str: Predictions or error message if not found.
+    """
+    # Load the trained model
+    model_save_path = 'src/models/random_forest_model.joblib'
+    try:
+        model = joblib.load(model_save_path)
+    except FileNotFoundError:
+        return {"error": "Trained model not found."}
+
+    train, test = split_dataset()
+    test_df = pd.read_json(test)
+
+    X_test = test_df.drop(columns=["Species"])
+    y_pred = pd.DataFrame(model.predict(X_test))
+
+    return y_pred.to_json(orient="records")

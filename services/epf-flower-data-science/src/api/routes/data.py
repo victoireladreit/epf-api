@@ -1,6 +1,6 @@
 import traceback
 
-from src.services.data import get_kaggle_data, load_iris_dataset, processing_dataset, split_dataset, train_dataset
+from src.services.data import get_kaggle_data, load_iris_dataset, processing_dataset, split_dataset, train_dataset, predict
 from fastapi import APIRouter, HTTPException
 
 router = APIRouter()
@@ -39,9 +39,17 @@ def split_iris_dataset():
     return result
 
 
-@router.get("/train")
+@router.get("/data/train")
 def train_iris_dataset():
     result = train_dataset()
+    if "error" in result:
+        raise HTTPException(status_code=404, detail=result["error"])
+    return result
+
+
+@router.get("/data/predict")
+def predict_iris_dataset():
+    result = predict()
     if "error" in result:
         raise HTTPException(status_code=404, detail=result["error"])
     return result
