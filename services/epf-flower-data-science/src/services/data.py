@@ -1,7 +1,11 @@
+import json
 import os
+
+import joblib
 import pandas as pd
 from kaggle import KaggleApi
 from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
 
 
 def get_kaggle_data():
@@ -62,3 +66,37 @@ def split_dataset():
         }
     except FileNotFoundError:
         return {"error": "Dataset file not found."}
+
+
+def train_dataset():
+    """
+    Trains a machine learning model using the training dataset.
+
+    Returns:
+        str : Status message indicating successful model training or error message if not found.
+    """
+    train, test = split_dataset()
+
+    train_df = pd.read_json(train)
+
+    # Separating X_train and y_train
+    X_train = train_df.drop(columns=["Species"])
+    y_train = train_df["Species"]
+
+    # Load model parameters from JSON file
+    parameters_file_path = "src/config/model_parameters.json"
+    with open(parameters_file_path, 'r') as file:
+        model_parameters = json.load(file)
+
+    # Initialize and train the model with train data
+    model = RandomForestClassifier(**model_parameters)
+    model.fit(X_train, y_train)
+
+    if not os.path.exists('src/models'):
+        os.makedirs('src/models')
+
+    # Store the model
+    model_save_path = 'src/models/random_forest_model.joblib'
+    joblib.dump(model, model_save_path)
+
+    return {"status": "Model trained and saved successfully"}
