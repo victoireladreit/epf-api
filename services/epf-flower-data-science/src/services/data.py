@@ -6,6 +6,7 @@ import pandas as pd
 from kaggle import KaggleApi
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
+from google.cloud import firestore
 
 
 def get_kaggle_data():
@@ -123,3 +124,28 @@ def predict():
     y_pred = pd.DataFrame(model.predict(X_test))
 
     return y_pred.to_json(orient="records")
+
+
+def get_firestore_data():
+    """
+    Retrieves data from a Firestore collection and document.
+
+    Returns:
+        str or None: Retrieved data or None if not found.
+    """
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "src/config/datasources-401318-1df14cce6bc9.json"
+    # Initialize Firestore
+    db = firestore.Client()
+
+    # Reference the collection and document
+    collection_ref = db.collection("parameters")
+    document_ref = collection_ref.document("parameters")
+
+    # Get data from the document
+    doc_data = document_ref.get().to_dict()
+
+    # Check if data was retrieved
+    if doc_data:
+        return doc_data
+    else:
+        return None

@@ -3,3 +3,5 @@ services/epf-flower-data-science/src/data/
 __pycache__/
 
 services/epf-flower-data-science/src/models/
+
+services/epf-flower-data-science/src/config/datasources-401318-1df14cce6bc9.json
