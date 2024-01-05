@@ -149,3 +149,32 @@ def get_firestore_data():
         return doc_data
     else:
         return None
+
+
+def update_firestore_data(parameter_name, parameter_value):
+    """
+    Creates or adds a parameter in a Firestore collection.
+
+    Args:
+        parameter_name (str): Name of the parameter.
+        parameter_value: Value of the parameter.
+
+    Returns:
+        str: Status message indicating successful parameter creation.
+    """
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "src/config/datasources-401318-1df14cce6bc9.json"
+    # Initialize Firestore
+    db = firestore.Client()
+
+    # Reference the collection and document
+    collection_ref = db.collection("parameters")
+    document_ref = collection_ref.document("parameters")
+
+    # Get existing data from the document
+    doc_data = document_ref.get().to_dict()
+
+    # Add or update the parameter
+    doc_data[parameter_name] = parameter_value
+    document_ref.set(doc_data)
+
+    return {"Firestore parameter edited with success"}

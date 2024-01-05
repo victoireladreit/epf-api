@@ -147,6 +147,8 @@ Don't forget to add me to the repo with the following email address: clement.let
 
 - **Step 14: Retrieve parameters from Firestore:** Add an endpoint to retrieve parameters from Firestore.
 
+**ATTENTION:** get your google service account json key and put it in services/epf-flower-data-science/src/config
+
 - **Step 15: Update and add Firestore parameters:** Add endpoints to update or add parameters in Firestore.
 
 - **Step 16: Authentication:** Implement authentication through Firestore authentication

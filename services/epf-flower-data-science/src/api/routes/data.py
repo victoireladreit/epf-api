@@ -1,6 +1,7 @@
 import traceback
 
-from src.services.data import get_kaggle_data, load_iris_dataset, processing_dataset, split_dataset, train_dataset, predict, get_firestore_data
+from src.services.data import (get_kaggle_data, load_iris_dataset, processing_dataset, split_dataset, train_dataset,
+                               predict, get_firestore_data, update_firestore_data)
 from fastapi import APIRouter, HTTPException
 
 router = APIRouter()
@@ -55,9 +56,27 @@ def predict_iris_dataset():
     return result
 
 
-@router.get("/data/firestore")
+@router.get("/data/get-firestore")
 def get_firestore():
     result = get_firestore_data()
+    if "error" in result:
+        raise HTTPException(status_code=404, detail=result["error"])
+    return result
+
+
+@router.get("/data/update-firestore")
+def update_firestore():
+    #here we change the n_estimators parameter
+    result = update_firestore_data('n_estimators',300)
+    if "error" in result:
+        raise HTTPException(status_code=404, detail=result["error"])
+    return result
+
+
+@router.get("/data/add-firestore")
+def add_parameter():
+    #here we add a useless parameter
+    result = update_firestore_data('test_param',400)
     if "error" in result:
         raise HTTPException(status_code=404, detail=result["error"])
     return result

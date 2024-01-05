@@ -6,3 +6,4 @@ pydantic==1.10
 opendatasets
 scikit-learn
 pytest
+google-cloud-firestore
