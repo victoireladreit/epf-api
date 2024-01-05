@@ -1,6 +1,7 @@
 import os
 import pandas as pd
 from kaggle import KaggleApi
+from sklearn.model_selection import train_test_split
 
 
 def get_kaggle_data():
@@ -39,5 +40,25 @@ def processing_dataset():
         df = pd.read_json(data)
         df['Species'] = df['Species'].apply(lambda x: x.replace('Iris-', ''))
         return df.to_json(orient='records')
+    except FileNotFoundError:
+        return {"error": "Dataset file not found."}
+
+
+def split_dataset():
+    """
+    Splits the processed dataset into training and testing sets.
+
+    Returns:
+        JSON or str: Training and testing datasets or error message if not found.
+    """
+    dataset_processed = processing_dataset()
+
+    try:
+        df = pd.read_json(dataset_processed)
+        train_df, test_df = train_test_split(df, test_size=0.2)
+        return {
+            train_df.to_json(orient='records'),
+            test_df.to_json(orient='records')
+        }
     except FileNotFoundError:
         return {"error": "Dataset file not found."}
