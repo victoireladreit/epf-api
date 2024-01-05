@@ -24,3 +24,20 @@ def load_iris_dataset():
         return df.to_json(orient='records')
     except FileNotFoundError:
         return {"error": "Dataset file not found."}
+
+
+def processing_dataset():
+    """
+    Processes the loaded Iris dataset by cleaning the Species column.
+
+    Returns:
+        JSON or str : Processed dataset or error message if not found.
+    """
+    data = load_iris_dataset()
+    # file_path = 'services/epf-flower-data-science/src/data/Iris.csv'
+    try:
+        df = pd.read_json(data)
+        df['Species'] = df['Species'].apply(lambda x: x.replace('Iris-', ''))
+        return df.to_json(orient='records')
+    except FileNotFoundError:
+        return {"error": "Dataset file not found."}
