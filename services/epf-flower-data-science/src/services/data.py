@@ -54,7 +54,7 @@ def split_dataset():
     Splits the processed dataset into training and testing sets.
 
     Returns:
-        JSON or str: Training and testing datasets or error message if not found.
+        dict: Training and testing datasets or error message if not found.
     """
     dataset_processed = processing_dataset()
 
@@ -62,8 +62,8 @@ def split_dataset():
         df = pd.read_json(dataset_processed)
         train_df, test_df = train_test_split(df, test_size=0.2)
         return {
-            train_df.to_json(orient='records'),
-            test_df.to_json(orient='records')
+            "train": train_df.to_json(orient='records'),
+            "test": test_df.to_json(orient='records')
         }
     except FileNotFoundError:
         return {"error": "Dataset file not found."}
@@ -76,31 +76,33 @@ def train_dataset():
     Returns:
         str : Status message indicating successful model training or error message if not found.
     """
-    train, test = split_dataset()
+    try:
+        train_data = split_dataset()
+        train_df = pd.read_json(train_data["train"])
 
-    train_df = pd.read_json(train)
+        # Separating X_train and y_train
+        X_train = train_df.drop(columns=["Species"])
+        y_train = train_df["Species"]
 
-    # Separating X_train and y_train
-    X_train = train_df.drop(columns=["Species"])
-    y_train = train_df["Species"]
+        # Load model parameters from JSON file
+        parameters_file_path = "src/config/model_parameters.json"
+        with open(parameters_file_path, 'r') as file:
+            model_parameters = json.load(file)
 
-    # Load model parameters from JSON file
-    parameters_file_path = "src/config/model_parameters.json"
-    with open(parameters_file_path, 'r') as file:
-        model_parameters = json.load(file)
+        # Initialize and train the model with train data
+        model = RandomForestClassifier(**model_parameters)
+        model.fit(X_train, y_train)
 
-    # Initialize and train the model with train data
-    model = RandomForestClassifier(**model_parameters)
-    model.fit(X_train, y_train)
+        if not os.path.exists('src/models'):
+            os.makedirs('src/models')
 
-    if not os.path.exists('src/models'):
-        os.makedirs('src/models')
+        # Store the model
+        model_save_path = 'src/models/random_forest_model.joblib'
+        joblib.dump(model, model_save_path)
 
-    # Store the model
-    model_save_path = 'src/models/random_forest_model.joblib'
-    joblib.dump(model, model_save_path)
-
-    return {"status": "Model trained and saved successfully"}
+        return {"status": "Model trained and saved successfully"}
+    except FileNotFoundError:
+        return {"error": "Dataset file not found."}
 
 
 def predict():
@@ -117,8 +119,8 @@ def predict():
     except FileNotFoundError:
         return {"error": "Trained model not found."}
 
-    train, test = split_dataset()
-    test_df = pd.read_json(test)
+    test_data = split_dataset()
+    test_df = pd.read_json(test_data["train"])
 
     X_test = test_df.drop(columns=["Species"])
     y_pred = pd.DataFrame(model.predict(X_test))
